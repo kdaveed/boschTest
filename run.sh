@@ -1,1 +1,1 @@
-java HelloWorld
+java -jar BoschTest.jar
