@@ -5,6 +5,7 @@ import java.util.HashMap;
 public class MainApp implements Runnable {
 
 	static String command;
+	String input;
 	static boolean newCommand = false;
 	public Map<String, Person> people;
 	Scanner scanner;
@@ -15,18 +16,18 @@ public class MainApp implements Runnable {
 		// TODO Auto-generated method stub
 		scanner = new Scanner(System.in);
 		people = new HashMap<String, Person>();
-		System.out.println("Reading file in");
+		System.out.println("Reading the input file ...\n");
 
-		print(Reader.readFile("input.txt"));
 		String[] rows = Reader.readFile("input.txt").split("\n");	
 		for(int i = 1; i < rows.length; i++){
 			Person person = RowProcessor.process(rows[i]);
+			this.people.put(person.name, person);
 			printPerson(i, person);
 		}
-			
+		
 		while (true) {
 			sleep();
-			print("\nPlease type a command! [add, delete, list, exit] ");
+			print("\nPlease type a command! [add, edit, delete, list, exit] ");
 			command = scanner.nextLine();
 			switch (command) {
 
@@ -45,7 +46,7 @@ public class MainApp implements Runnable {
 				break;
 			
 			case "edit" :
-				
+				editHandler();
 				break;
 			
 			case "list":
@@ -88,6 +89,66 @@ public class MainApp implements Runnable {
 		}
 	}
 
+	public void editHandler(){
+			
+		print("Please enter name of the person you want to edit");
+		input = scanner.nextLine();
+		if(nameExists()){
+			String name = input;
+			while(true){
+				print("Please enter the property you want to edit! [name, number, email] (done to exit)");
+				input = scanner.nextLine();
+				boolean done = false;
+				switch (input) {
+				case "name" :
+					while(true){
+						print("Type the new name!");
+						input = scanner.nextLine();
+						if(nameExists()){
+							print("The name already exists");
+						} else {
+							this.people.get(name).name = input;
+							this.people.put(input, this.people.get(name));
+							this.people.remove(name);
+							name = input;
+							print("Name has been modified successfully!");
+							break;
+						}
+					}
+					break;
+				case "number" :
+					
+					print("Type the new number!");
+					input = scanner.nextLine();
+					this.people.get(name).tel = (input.length() > 0 ) ? input : "EMPTY"; 
+					print("Number has been modified successfully!");
+					break;
+				
+				case "email" : 
+					print("Type the new email!");
+					input = scanner.nextLine();
+					this.people.get(name).tel = (input.length() > 0 ) ? input : "EMPTY"; 
+					print("Number has been modified successfully!");
+					break;
+
+				case "done" :
+					done = true;
+					break;
+				default : 
+					print("Invalid command");
+					break;
+				}
+				if(done) break;
+			}
+		} else {
+			print("The name \"" + input + "\" does not exist!");
+		}	
+	}
+	
+	public boolean nameExists(){
+		return this.people.keySet().contains(input);
+	}
+	
 	public void newPersonHandler() {
 
 		String data[] = new String[3];
