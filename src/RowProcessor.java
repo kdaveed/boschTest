@@ -26,7 +26,7 @@ public class RowProcessor {
 		String tel = secondPart.split(",")[0];
 		tel = removeSpace(tel);
 		if(tel.length() == 0){
-			return "EMPTY";
+			return "Empty";
 		} else {
 			return tel;	
 		}
@@ -41,7 +41,7 @@ public class RowProcessor {
 			mail = removeSpace(mail);
 			mail = validateMail(mail);
 		} else {
-			mail = "EMPTY"; 
+			mail = "Empty"; 
 		}
 		return mail;
 	}
@@ -74,11 +74,14 @@ public class RowProcessor {
 		return str.substring(cnt);
 	}
 
-	private static String validateMail(String str){
+	public static String validateMail(String str){
 		
-		if(str.indexOf(" ") > -1 || str.indexOf("@") == -1){
+		if(str.length() == 0){
+			str = "Empty";
+		} else if(str.indexOf(" ") > -1 || str.indexOf("@") == -1 || str.indexOf(".") == 0){
 			str = "INVALID";
 		} 
 		return str;
 	}
+	
 }

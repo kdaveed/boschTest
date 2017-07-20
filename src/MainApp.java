@@ -127,8 +127,8 @@ public class MainApp implements Runnable {
 				case "email" : 
 					print("Type the new email!");
 					input = scanner.nextLine();
-					this.people.get(name).tel = (input.length() > 0 ) ? input : "EMPTY"; 
-					print("Number has been modified successfully!");
+					this.people.get(name).eMail = RowProcessor.validateMail(input);  
+					print("E-mail has been modified successfully!");
 					break;
 
 				case "done" :
@@ -213,7 +213,7 @@ public class MainApp implements Runnable {
 	public void telHandler(String data[], String input) {
 
 		if (input.length() == 0) {
-			data[1] = "EMPTY";
+			data[1] = "Empty";
 		} else {
 			data[1] = input;
 		}
@@ -222,11 +222,7 @@ public class MainApp implements Runnable {
 
 	public void mailHander(String data[], String input) {
 
-		if (input.length() == 0) {
-			data[2] = "EMPTY";
-		} else {
-			data[2] = input;
-		}
+		data[2] = RowProcessor.validateMail(input);
 		cnt++;
 	}
 	
